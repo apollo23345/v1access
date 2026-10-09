@@ -118,9 +118,13 @@ async function showLogin() {
     toast("Demo note", "Use recovery@dummy.demo to demonstrate alternate recovery.");
   });
 
-  const { data } = await api("/api/demo-accounts");
+const { data } = await api("/api/demo-accounts");
   const panel = document.getElementById("demoAccountsPanel");
-  panel.innerHTML = data.accounts.map(account => `
+  
+  // Safely fallback to an empty array if data.accounts doesn't exist
+  const accounts = data?.accounts || [];
+
+  panel.innerHTML = accounts.map(account => `
     <button class="demo-account" data-email="${escapeHtml(account.email)}" data-password="${escapeHtml(account.password)}">
       <div>
         <strong>${escapeHtml(account.name)}</strong>
@@ -133,6 +137,7 @@ async function showLogin() {
     <div class="demo-reset-row">
       <button class="btn btn-light" id="loginResetDemoBtn">Reset Demo Data</button>
     </div>`;
+  
 
   panel.querySelectorAll(".demo-account").forEach(btn => {
     btn.addEventListener("click", () => {
