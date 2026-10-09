@@ -118,7 +118,7 @@ async function showLogin() {
     toast("Demo note", "Use recovery@dummy.demo to demonstrate alternate recovery.");
   });
 
-const { data } = await api("/api/demo-accounts");
+const { data } = await api("/data/db.json");
   const panel = document.getElementById("demoAccountsPanel");
   
   // Safely fallback to an empty array if data.accounts doesn't exist
