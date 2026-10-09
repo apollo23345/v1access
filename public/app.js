@@ -118,39 +118,30 @@ async function showLogin() {
     toast("Demo note", "Use recovery@dummy.demo to demonstrate alternate recovery.");
   });
 
-try {
-  const res = await api("/api/demo-accounts");
+  const { data } = await api("/api/demo-accounts");
   const panel = document.getElementById("demoAccountsPanel");
-  
-  // Safely fallback to an empty array if res or accounts doesn't exist
-  const accounts = res?.accounts || res?.data?.accounts || [];
+  panel.innerHTML = data.accounts.map(account => `
+    <button class="demo-account" data-email="${escapeHtml(account.email)}" data-password="${escapeHtml(account.password)}">
+      <div>
+        <strong>${escapeHtml(account.name)}</strong>
+        <span>${escapeHtml(account.email)}</span>
+        <span>${escapeHtml(account.subtitle)}</span>
+      </div>
+      <code>${escapeHtml(account.password)}</code>
+    </button>
+  `).join("") + `
+    <div class="demo-reset-row">
+      <button class="btn btn-light" id="loginResetDemoBtn">Reset Demo Data</button>
+    </div>`;
 
-  if (panel) {
-    panel.innerHTML = accounts.map(account => `
-      <button class="demo-account" data-email="${escapeHtml(account.email)}" data-password="${escapeHtml(account.password)}">
-        <div>
-          <strong>${escapeHtml(account.name)}</strong>
-          <span>${escapeHtml(account.email)}</span>
-          <span>${escapeHtml(account.subtitle)}</span>
-        </div>
-        <code>${escapeHtml(account.password)}</code>
-      </button>
-    `).join("") + `
-      <div class="demo-reset-row">
-        <button class="btn btn-light" id="loginResetDemoBtn">Reset Demo Data</button>
-      </div>`;
-
-    panel.querySelectorAll(".demo-account").forEach(btn => {
-      btn.addEventListener("click", () => {
-        email.value = btn.dataset.email;
-        password.value = btn.dataset.password;
-        toast("Demo account loaded", btn.dataset.email);
-      });
+  panel.querySelectorAll(".demo-account").forEach(btn => {
+    btn.addEventListener("click", () => {
+      email.value = btn.dataset.email;
+      password.value = btn.dataset.password;
+      toast("Demo account loaded", btn.dataset.email);
     });
-  }
-} catch (err) {
-  console.error("Failed to load demo accounts:", err);
-}
+  });
+
   document.getElementById("demoAccountsToggle").addEventListener("click", e => {
     panel.hidden = !panel.hidden;
     e.currentTarget.textContent = panel.hidden ? "View demo accounts" : "Hide demo accounts";
