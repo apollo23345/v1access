@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="VaultAccess functional usable-security prototype" />
+  <title>VaultAccess</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <button class="brand" data-route="login" aria-label="VaultAccess home">
+        <span class="brand-mark">V</span>
+        <span class="brand-copy">
+          <strong>VAULTACCESS</strong>
+          <small>Dynamic Risk-Limiting &amp; Account Protection</small>
+        </span>
+      </button>
+
+      <nav class="topnav">
+        <button class="nav-link active" data-route="login">Customer Login</button>
+        <button class="nav-link" data-route="dashboard">Customer Dashboard</button>
+      </nav>
+    </header>
+
+    <main id="screen" class="screen-shell" aria-live="polite"></main>
+
+    <div class="toast-region" id="toastRegion" aria-live="assertive"></div>
+  </div>
+
+  <!-- LOGIN -->
+  <template id="tpl-login">
+    <section class="login-stage">
+      <div class="login-hero">
+        <div>
+          <div class="eyebrow light">SECURE BANKING ACCESS</div>
+          <h1>Security that adapts to login risk.</h1>
+        </div>
+
+        <div class="hero-features">
+          <div class="hero-feature"><span class="hero-icon">✓</span><div><strong>Adaptive rate-limiting</strong><span>Repeated failures block the suspicious source instead of automatically locking the whole customer account.</span></div></div>
+          <div class="hero-feature"><span class="hero-icon">✓</span><div><strong>Device-aware verification</strong><span>Known devices stay low-friction while unfamiliar devices step up.</span></div></div>
+          <div class="hero-feature"><span class="hero-icon">✓</span><div><strong>Protected Mode</strong><span>High-risk sign-ins receive stronger identity verification.</span></div></div>
+          <div class="hero-feature"><span class="hero-icon">✓</span><div><strong>Visible account security</strong><span>Customers can review activity, sessions, and recovery controls after sign-in.</span></div></div>
+        </div>
+      </div>
+
+      <div class="auth-card">
+        <div class="shield-icon">◆</div>
+        <h2>Welcome back</h2>
+        <p class="subtext">Sign in to continue to your account.</p>
+
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="email">Email / Username</label>
+            <input class="input" id="email" autocomplete="username" placeholder="name@vaultaccess.demo" />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <div class="password-field">
+              <input class="input" id="password" type="password" autocomplete="current-password" placeholder="Enter password" />
+              <button class="password-toggle" id="passwordToggle" type="button"><span>◉</span><span id="passwordToggleText">Show</span></button>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label class="checkbox"><input type="checkbox" id="rememberDevice" checked /> Remember this device</label>
+            <button class="text-link" type="button" id="forgotPasswordBtn">Forgot password?</button>
+          </div>
+
+          <button class="btn btn-primary btn-block" id="signInBtn" type="submit">Sign in</button>
+        </form>
+
+        <button class="demo-accounts-toggle" id="demoAccountsToggle" type="button">View demo accounts</button>
+        <div id="demoAccountsPanel" class="demo-accounts-panel" hidden></div>
+      </div>
+    </section>
+  </template>
+
+  <!-- LEVEL 1 -->
+  <template id="tpl-level1">
+    <section class="center-wrap">
+      <div class="center-card">
+        <div class="status-orb success">✓</div>
+        <div class="level-label success">STANDARD ACCESS</div>
+        <h2>Level 1 · Standard</h2>
+        <p class="subtext">Recognized device + correct password</p>
+
+        <div class="info-panel green">
+          <div class="info-grid">
+            <span>Device</span><strong id="level1Device"></strong>
+            <span>Status</span><span class="pill green">RECOGNIZED</span>
+            <span>Security</span><strong>No additional verification required</strong>
+          </div>
+        </div>
+
+        <button class="btn btn-success btn-block" data-route="dashboard">Continue to Account</button>
+      </div>
+    </section>
+  </template>
+
+  <!-- LEVEL 2 -->
+  <template id="tpl-level2">
+    <section class="center-wrap">
+      <div class="center-card">
+        <div class="status-orb blue">◆</div>
+        <div class="level-label blue">LEVEL 2 · VERIFICATION</div>
+        <h2>Verify Your Identity</h2>
+        <p class="subtext">Correct password, unfamiliar device</p>
+
+        <div class="info-panel blue">
+          <strong>One-time code generated</strong>
+          This functional demo generates a new OTP on the server for this login.
+        </div>
+
+        <div class="demo-code-box">
+          <span>Demo OTP</span>
+          <strong id="demoOtp"></strong>
+        </div>
+
+        <form id="otpForm">
+          <div class="form-group">
+            <label for="otpInput">Enter 6-digit code</label>
+            <input class="input code-input" id="otpInput" maxlength="6" inputmode="numeric" autocomplete="one-time-code" />
+          </div>
+          <button class="btn btn-primary btn-block" type="submit">Verify Code</button>
+        </form>
+      </div>
+    </section>
+  </template>
+
+  <!-- PROTECTED MODE -->
+  <template id="tpl-protected">
+    <section class="center-wrap">
+      <div class="center-card">
+        <div class="status-orb warning">!</div>
+        <div class="level-label warning">LEVEL 3 · PROTECTED MODE</div>
+        <h2>Protected Mode Enabled</h2>
+        <p class="subtext">High-risk sign-in requires stronger verification</p>
+
+        <div class="info-panel orange">
+          <strong>Why did this happen?</strong>
+          This account or source currently has higher-risk conditions. VaultAccess does not automatically lock the whole account.
+        </div>
+
+        <div class="step-list">
+          <div class="step-row"><span class="step-num">1</span><div><strong>Rate-limit suspicious behavior</strong><span>Repeated failures are restricted at the source level.</span></div><span>✓</span></div>
+          <div class="step-row"><span class="step-num">2</span><div><strong>Verify identity</strong><span>Use a stronger independent verification channel.</span></div><span>→</span></div>
+          <div class="step-row"><span class="step-num">3</span><div><strong>Preserve trusted access</strong><span>Other legitimate customer access is not automatically locked.</span></div><span>✓</span></div>
+        </div>
+
+        <button class="btn btn-warning btn-block" id="startChallengeBtn">Continue to Final Challenge</button>
+      </div>
+    </section>
+  </template>
+
+  <!-- FINAL CHALLENGE -->
+  <template id="tpl-challenge">
+    <section class="center-wrap">
+      <div class="center-card">
+        <div class="status-orb purple">◆</div>
+        <div class="level-label purple">FINAL IDENTITY CHALLENGE</div>
+        <h2>Confirm It's Really You</h2>
+        <p class="subtext">Choose how to receive your one-time code.</p>
+
+        <div class="option-list">
+          <button class="option selected" data-method="email"><span class="option-icon">@</span><div><strong>Email Verification</strong><span>Generate a demo email OTP.</span></div><span>›</span></button>
+          <button class="option" data-method="sms"><span class="option-icon">S</span><div><strong>SMS Verification</strong><span>Generate a demo SMS OTP.</span></div><span>›</span></button>
+        </div>
+
+        <button class="btn btn-primary btn-block" id="generateChallengeBtn">Generate Verification Code</button>
+        <button class="text-link centered-link" id="cantAccessBtn">Can't access SMS or email?</button>
+      </div>
+    </section>
+  </template>
+
+  <!-- CHALLENGE OTP -->
+  <template id="tpl-challenge-code">
+    <section class="center-wrap">
+      <div class="center-card">
+        <div class="status-orb purple">◆</div>
+        <div class="level-label purple">IDENTITY VERIFICATION</div>
+        <h2>Enter Verification Code</h2>
+        <p class="subtext">Three failed codes will block only this sign-in source.</p>
+
+        <div class="demo-code-box purple-box">
+          <span>Demo OTP</span>
+          <strong id="challengeDemoOtp"></strong>
+        </div>
+
+        <form id="challengeOtpForm">
+          <div class="form-group">
+            <label for="challengeOtpInput">6-digit code</label>
+            <input class="input code-input" id="challengeOtpInput" maxlength="6" inputmode="numeric" />
+          </div>
+          <button class="btn btn-primary btn-block" type="submit">Verify Identity</button>
+        </form>
+
+        <button class="text-link centered-link" id="challengeCantAccessBtn">Can't access these methods?</button>
+      </div>
+    </section>
+  </template>
+
+  <!-- RECOVERY -->
+  <template id="tpl-recovery">
+    <section class="center-wrap">
+      <div class="center-card">
+        <div class="status-orb purple">◆</div>
+        <div class="level-label purple">ALTERNATE VERIFICATION</div>
+        <h2>Use Recovery Code</h2>
+        <p class="subtext">Independent fallback when SMS or email is unavailable.</p>
+
+        <div class="info-panel purple">
+          <strong>Demo recovery code</strong>
+          Use <code>RECOVER-2026</code> for the dummy accounts.
+        </div>
+
+        <form id="recoveryForm">
+          <div class="form-group">
+            <label for="recoveryCodeInput">Recovery code</label>
+            <input class="input" id="recoveryCodeInput" autocomplete="off" />
+          </div>
+          <button class="btn btn-primary btn-block" type="submit">Verify Recovery Code</button>
+        </form>
+      </div>
+    </section>
+  </template>
+
+  <!-- SOURCE BLOCKED -->
+  <template id="tpl-source-blocked">
+    <section class="center-wrap">
+      <div class="center-card">
+        <div class="status-orb danger">×</div>
+        <div class="level-label danger">SUSPICIOUS SOURCE BLOCKED</div>
+        <h2>This Sign-In Source Is Restricted</h2>
+        <p class="subtext">The customer account itself is not automatically locked.</p>
+
+        <div class="info-panel red">
+          <strong>Source restriction applied</strong>
+          Repeated failed attempts from this browser/device are temporarily blocked.
+        </div>
+
+        <div class="info-panel green">
+          <strong>Usable-security improvement</strong>
+          An attacker who only knows the customer's username cannot intentionally lock the victim's whole account.
+        </div>
+
+        <div class="source-block-time" id="sourceBlockTime"></div>
+
+        <button class="btn btn-light btn-block" id="resetDemoBtn">Reset Demo Data</button>
+      </div>
+    </section>
+  </template>
+
+  <!-- DASHBOARD -->
+  <template id="tpl-dashboard">
+    <section class="dashboard-shell">
+      <aside class="side">
+        <div class="side-brand"><span class="mini-mark">V</span><strong>VAULTACCESS</strong></div>
+        <nav class="side-nav">
+          <button class="side-link active" data-customer-page="overview">Overview</button>
+          <button class="side-link" data-customer-page="activity">Activity</button>
+          <button class="side-link" data-customer-page="sessions">Active Sessions</button>
+          <button class="side-link" data-customer-page="checkup">Security Checkup</button>
+          <button class="side-link" data-customer-page="recovery">Recovery</button>
+        </nav>
+        <button class="side-link logout" id="logoutBtn">Logout</button>
+      </aside>
+
+      <div class="dash-main">
+        <div class="dash-head">
+          <div><div class="eyebrow">CUSTOMER DASHBOARD</div><h1 id="dashboardTitle">Account Security Overview</h1></div>
+          <div class="user-mini"><strong id="dashboardName"></strong><span id="dashboardEmail"></span></div>
+        </div>
+
+        <div id="dashboardContent"></div>
+      </div>
+    </section>
+  </template>
+
+  <script src="/app.js"></script>
+</body>
+</html>

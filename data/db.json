@@ -1,0 +1,329 @@
+{
+  "accounts": [
+    {
+      "id": "level1",
+      "email": "level1@dummy.demo",
+      "name": "Level 1 Demo",
+      "passwordSalt": "7ca015f4ac51e55b",
+      "passwordHash": "a6859ef472e2e880b1c65241934463d1198b8dae13f03684fd6d63abc743db1d",
+      "profile": "standard",
+      "profileSubtitle": "Level 1 / recognized-device demo",
+      "recoveryUnavailable": false,
+      "recoveryCode": "RECOVER-2026",
+      "trustedDevices": [
+        "maria-browser"
+      ],
+      "blockedSources": {},
+      "activities": [
+        {
+          "id": "48f217d0-4e8f-43af-935f-0c55abf7c642",
+          "time": "2026-10-07T14:42:50.016Z",
+          "type": "login",
+          "title": "Recognized sign-in",
+          "source": "Chrome Test",
+          "sourceId": "maria-browser",
+          "status": "Recognized",
+          "details": "Known low-risk sign-in."
+        }
+      ],
+      "sessions": [
+        {
+          "id": "e93c0414-fb56-4c1e-a144-9038085da40a",
+          "deviceId": "maria-browser",
+          "label": "Chrome Test",
+          "location": "Local Demo Browser",
+          "createdAt": "2026-10-07T14:42:50.016Z",
+          "current": true
+        },
+        {
+          "id": "seed-iphone",
+          "deviceId": "seed-iphone",
+          "label": "iPhone 13",
+          "location": "Manila, Philippines",
+          "createdAt": "2026-10-07T12:10:00.000Z",
+          "current": false
+        }
+      ],
+      "securityCheckup": {
+        "passwordSecure": true,
+        "mfaEnabled": true,
+        "recoveryCodesReady": false
+      },
+      "failedBySource": {
+        "test-device-maria": {
+          "count": 0,
+          "lastAt": "2026-10-07T14:41:37.119Z"
+        },
+        "maria-browser": {
+          "count": 0,
+          "lastAt": "2026-10-07T14:42:50.016Z"
+        }
+      }
+    },
+    {
+      "id": "level2",
+      "email": "level2@dummy.demo",
+      "name": "Level 2 Demo",
+      "passwordSalt": "bb83981568a45ef0",
+      "passwordHash": "5e5d332c6147db96ad64f24b87fc5dabd1c35c9eba1e183dfae6333529173ce5",
+      "profile": "new-device",
+      "profileSubtitle": "Level 2 / new-device verification demo",
+      "recoveryUnavailable": false,
+      "recoveryCode": "RECOVER-2026",
+      "trustedDevices": [
+        "carlo-browser"
+      ],
+      "blockedSources": {},
+      "activities": [
+        {
+          "id": "7ebf7d07-af48-4bce-a303-b6dff64b49eb",
+          "time": "2026-10-07T14:42:50.020Z",
+          "type": "verification-success",
+          "title": "Device verification passed",
+          "source": "Chrome New",
+          "sourceId": "carlo-browser",
+          "status": "Verified",
+          "details": "New device verified successfully."
+        },
+        {
+          "id": "24a18414-4283-4155-99c4-c24b16b60053",
+          "time": "2026-10-07T14:42:50.019Z",
+          "type": "login",
+          "title": "New device verification required",
+          "source": "Chrome New",
+          "sourceId": "carlo-browser",
+          "status": "Verification Required",
+          "details": "Correct password from an unfamiliar device."
+        }
+      ],
+      "sessions": [
+        {
+          "id": "5347b443-36a2-43eb-b07a-a658c538dbcb",
+          "deviceId": "carlo-browser",
+          "label": "Chrome New",
+          "location": "Local Demo Browser",
+          "createdAt": "2026-10-07T14:42:50.020Z",
+          "current": true
+        },
+        {
+          "id": "seed-android",
+          "deviceId": "seed-android",
+          "label": "Android Phone",
+          "location": "Quezon City, Philippines",
+          "createdAt": "2026-10-07T10:30:00.000Z",
+          "current": false
+        }
+      ],
+      "securityCheckup": {
+        "passwordSecure": true,
+        "mfaEnabled": true,
+        "recoveryCodesReady": false
+      },
+      "failedBySource": {
+        "test-device-carlo": {
+          "count": 0,
+          "lastAt": "2026-10-07T14:41:37.120Z"
+        },
+        "carlo-browser": {
+          "count": 0,
+          "lastAt": "2026-10-07T14:42:50.019Z"
+        }
+      }
+    },
+    {
+      "id": "level3",
+      "email": "level3@dummy.demo",
+      "name": "Level 3 Demo",
+      "passwordSalt": "c8ba80f7c0e1a668",
+      "passwordHash": "e020fcf971f6a1a83174d5c92ce143d0c40422a65543c75ff10c6f8740ec43f0",
+      "profile": "high-risk",
+      "profileSubtitle": "Level 3 / protected-mode demo",
+      "recoveryUnavailable": false,
+      "recoveryCode": "RECOVER-2026",
+      "trustedDevices": [
+        "ana-browser"
+      ],
+      "blockedSources": {
+        "attacker": {
+          "reason": "Three failed password attempts from the same source",
+          "until": "2026-10-07T14:43:50.027Z"
+        }
+      },
+      "activities": [
+        {
+          "id": "f3f92604-cbf2-4029-b822-1f84ef18eaaf",
+          "time": "2026-10-07T14:42:50.028Z",
+          "type": "login",
+          "title": "Protected Mode triggered",
+          "source": "Owner Laptop",
+          "sourceId": "owner2",
+          "status": "Verification Required",
+          "details": "High-risk profile or recent failed attempts require stronger verification."
+        },
+        {
+          "id": "ae255642-41e0-438a-8752-32f3b01886e5",
+          "time": "2026-10-07T14:42:50.027Z",
+          "type": "source-block",
+          "title": "Suspicious source blocked",
+          "source": "attacker",
+          "sourceId": "attacker",
+          "status": "Blocked",
+          "details": "Three failed password attempts from the same source. Customer account remains available from other trusted access."
+        },
+        {
+          "id": "12f0d9d7-d4ac-4c8a-b8b0-c8a9c81f2eed",
+          "time": "2026-10-07T14:42:50.027Z",
+          "type": "failed-login",
+          "title": "Failed password attempt",
+          "source": "Bad Chrome",
+          "sourceId": "attacker",
+          "status": "Rate limited",
+          "details": "Failed password attempt 3 from this source."
+        },
+        {
+          "id": "94191997-0421-4779-a6be-4d6bdcb03581",
+          "time": "2026-10-07T14:42:50.026Z",
+          "type": "failed-login",
+          "title": "Failed password attempt",
+          "source": "Bad Chrome",
+          "sourceId": "attacker",
+          "status": "Failed",
+          "details": "Failed password attempt 2 from this source."
+        },
+        {
+          "id": "60439ef4-4b10-47c9-b673-38e74960cc8f",
+          "time": "2026-10-07T14:42:50.025Z",
+          "type": "failed-login",
+          "title": "Failed password attempt",
+          "source": "Bad Chrome",
+          "sourceId": "attacker",
+          "status": "Failed",
+          "details": "Failed password attempt 1 from this source."
+        },
+        {
+          "id": "edf2ebae-6b73-4222-b4b3-9a7ef5ff2b5a",
+          "time": "2026-10-07T14:42:50.022Z",
+          "type": "verification-success",
+          "title": "Final identity challenge passed",
+          "source": "Chrome Risk",
+          "sourceId": "ana-browser",
+          "status": "Verified",
+          "details": "High-risk sign-in verified. Account remains available with cooldown."
+        },
+        {
+          "id": "2ecad15f-99ef-4990-8e5d-012b900542a3",
+          "time": "2026-10-07T14:42:50.021Z",
+          "type": "login",
+          "title": "Protected Mode triggered",
+          "source": "Chrome Risk",
+          "sourceId": "ana-browser",
+          "status": "Verification Required",
+          "details": "High-risk profile or recent failed attempts require stronger verification."
+        }
+      ],
+      "sessions": [
+        {
+          "id": "f0736582-2d6f-4f99-95e0-7d1931e5a5b3",
+          "deviceId": "ana-browser",
+          "label": "Chrome Risk",
+          "location": "Local Demo Browser",
+          "createdAt": "2026-10-07T14:42:50.022Z",
+          "current": true
+        }
+      ],
+      "securityCheckup": {
+        "passwordSecure": true,
+        "mfaEnabled": true,
+        "recoveryCodesReady": false
+      },
+      "failedBySource": {
+        "test-device-ana": {
+          "count": 0,
+          "lastAt": "2026-10-07T14:41:37.123Z"
+        },
+        "attacker-device": {
+          "count": 3,
+          "lastAt": "2026-10-07T14:41:46.436Z"
+        },
+        "owner-trusted-device": {
+          "count": 0,
+          "lastAt": "2026-10-07T14:41:52.115Z"
+        },
+        "ana-browser": {
+          "count": 0,
+          "lastAt": "2026-10-07T14:42:50.021Z"
+        },
+        "attacker": {
+          "count": 3,
+          "lastAt": "2026-10-07T14:42:50.027Z"
+        },
+        "owner2": {
+          "count": 0,
+          "lastAt": "2026-10-07T14:42:50.028Z"
+        }
+      }
+    },
+    {
+      "id": "recovery",
+      "email": "recovery@dummy.demo",
+      "name": "Recovery Demo",
+      "passwordSalt": "898dde0796cad483",
+      "passwordHash": "ce40be3102bb9b48d1e5518232209765b94a9f50fdb2c45d5a7b7cbfc0bf633f",
+      "profile": "recovery",
+      "profileSubtitle": "Alternate-recovery demo",
+      "recoveryUnavailable": true,
+      "recoveryCode": "RECOVER-2026",
+      "trustedDevices": [
+        "luis-browser"
+      ],
+      "blockedSources": {},
+      "activities": [
+        {
+          "id": "fba0e6af-368b-4ace-8532-e6575f233090",
+          "time": "2026-10-07T14:42:50.025Z",
+          "type": "recovery-success",
+          "title": "Alternate verification passed",
+          "source": "Chrome Recovery",
+          "sourceId": "luis-browser",
+          "status": "Verified",
+          "details": "Independent recovery code verified successfully."
+        },
+        {
+          "id": "820d824b-2190-42ac-a89a-574bc8977cfe",
+          "time": "2026-10-07T14:42:50.023Z",
+          "type": "login",
+          "title": "Protected Mode triggered",
+          "source": "Chrome Recovery",
+          "sourceId": "luis-browser",
+          "status": "Verification Required",
+          "details": "High-risk profile or recent failed attempts require stronger verification."
+        }
+      ],
+      "sessions": [
+        {
+          "id": "71a87207-53f1-4a46-b303-0cbbdaeb2c1b",
+          "deviceId": "luis-browser",
+          "label": "Chrome Recovery",
+          "location": "Local Demo Browser",
+          "createdAt": "2026-10-07T14:42:50.025Z",
+          "current": true
+        }
+      ],
+      "securityCheckup": {
+        "passwordSecure": true,
+        "mfaEnabled": true,
+        "recoveryCodesReady": false
+      },
+      "failedBySource": {
+        "test-device-luis": {
+          "count": 0,
+          "lastAt": "2026-10-07T14:41:37.124Z"
+        },
+        "luis-browser": {
+          "count": 0,
+          "lastAt": "2026-10-07T14:42:50.023Z"
+        }
+      }
+    }
+  ]
+}
