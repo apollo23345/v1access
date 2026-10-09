@@ -120,6 +120,10 @@ async function showLogin() {
 
   const { data } = await api("/api/demo-accounts");
   const panel = document.getElementById("demoAccountsPanel");
+
+// Safely fallback to an empty array if res.accounts is missing
+const accounts = res?.accounts || res?.data?.accounts || [];
+
   panel.innerHTML = data.accounts.map(account => `
     <button class="demo-account" data-email="${escapeHtml(account.email)}" data-password="${escapeHtml(account.password)}">
       <div>
